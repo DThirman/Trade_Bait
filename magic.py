@@ -8,11 +8,11 @@ for i in range(1,1000):
     lines = filehandle.readlines()
     line = reduce(lambda a,b: a + b, lines)
 
-    p = re.compile(r'<a href="/magic/([\w-]*)/([\w-]*)"><img id="img_[\w-]*" src="([\w*:./]*)" onerror="this.src=\'http://i.tcgplayer.com/0.jpg\'" style="margin-bottom:5px;margin-top:5px"/></a>')
+    p = re.compile(r'<a href="/magic/([\w-\(\)]*)/([\w-]*)"><img id="img_[\w-]*" src="([\w*:./]*)" onerror="this.src=\'http://i.tcgplayer.com/0.jpg\'" style="margin-bottom:5px;margin-top:5px"/></a>')
     m = p.findall(line)
     for card in m:
             downloaded_image = file(card[0]+"_"+card[1]+".jpg", "wb")
-            image_on_web = urllib.urlopen(card[2])
+            image_on_web = urllib.urlopen(card[2].split("_",1)[0]+".jpg")
             while True:
                     buf = image_on_web.read(65536)
                     if len(buf) == 0:
